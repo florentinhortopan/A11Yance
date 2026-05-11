@@ -45,10 +45,16 @@ export default function Home() {
             </p>
           </div>
 
-          <aside className="col-span-12 md:col-span-4 md:pl-8 md:border-l md:border-[var(--color-rule)]">
-            <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-mute)] mb-3">
+          <section
+            aria-labelledby="in-this-issue"
+            className="col-span-12 md:col-span-4 md:pl-8 md:border-l md:border-[var(--color-rule)]"
+          >
+            <h2
+              id="in-this-issue"
+              className="font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-mute)] mb-3"
+            >
               In this issue
-            </p>
+            </h2>
             <ul className="space-y-3 font-serif text-lg leading-snug">
               <li>
                 <span className="font-mono text-xs text-[var(--color-mute)] mr-2">
@@ -75,7 +81,7 @@ export default function Home() {
                 Colour-vision simulation, on demand.
               </li>
             </ul>
-          </aside>
+          </section>
         </section>
 
         {/* Input */}

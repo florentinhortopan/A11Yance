@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="The Translator">
+  <rect width="64" height="64" rx="13" fill="#F7F4EC"/>
+  <text
+    x="33"
+    y="49"
+    text-anchor="middle"
+    font-family="'Fraunces','Iowan Old Style','Apple Garamond',Georgia,'Times New Roman',serif"
+    font-style="italic"
+    font-weight="700"
+    font-size="54"
+    fill="#101010"
+  >T</text>
+  <circle cx="47.5" cy="47.5" r="4" fill="#E1341E"/>
+</svg>

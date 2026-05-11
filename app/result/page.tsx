@@ -37,7 +37,10 @@ export default async function ResultPage({ searchParams }: PageProps) {
   if (!res.ok) {
     const errBody = await res.json().catch(() => ({ error: "Unknown error" }));
     return (
-      <div className="relative z-10 max-w-[1280px] mx-auto px-6 md:px-10 py-16">
+      <main
+        id="main"
+        className="relative z-10 max-w-[1280px] mx-auto px-6 md:px-10 py-16"
+      >
         <BackLink />
         <h1 className="mt-10 font-serif text-4xl">We couldn&rsquo;t read that page.</h1>
         <p className="mt-3 text-[var(--color-mute)] max-w-[60ch]">
@@ -50,14 +53,14 @@ export default async function ResultPage({ searchParams }: PageProps) {
           </Link>
           .
         </p>
-      </div>
+      </main>
     );
   }
 
   const data = (await res.json()) as AnalyzeResponse;
 
   return (
-    <div
+    <main
       id="main"
       className="relative z-10 max-w-[1400px] mx-auto px-6 md:px-10 py-8 md:py-12"
     >
@@ -77,19 +80,25 @@ export default async function ResultPage({ searchParams }: PageProps) {
       </h1>
 
       <div className="mt-10 grid grid-cols-12 gap-8">
-        <aside className="col-span-12 lg:col-span-5 xl:col-span-4 space-y-6 lg:sticky lg:top-6 lg:self-start lg:max-h-[calc(100dvh-3rem)] lg:overflow-y-auto pr-1">
+        <section
+          aria-label="Accessibility audit"
+          className="col-span-12 lg:col-span-5 xl:col-span-4 space-y-6 lg:sticky lg:top-6 lg:self-start lg:max-h-[calc(100dvh-3rem)] lg:overflow-y-auto pr-1"
+        >
           <ScoreRing score={data.score} url={data.finalUrl} />
           <ViolationsList
             violations={data.violations}
             incomplete={data.incomplete}
           />
-        </aside>
+        </section>
 
-        <section className="col-span-12 lg:col-span-7 xl:col-span-8">
+        <section
+          aria-label="Re-published content"
+          className="col-span-12 lg:col-span-7 xl:col-span-8"
+        >
           <ResultExperience data={data} />
         </section>
       </div>
-    </div>
+    </main>
   );
 }
 
