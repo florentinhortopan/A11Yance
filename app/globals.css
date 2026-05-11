@@ -1,0 +1,322 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Fraunces", "Iowan Old Style", "Apple Garamond", "Baskerville",
+    "Times New Roman", serif;
+  --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, monospace;
+
+  --color-paper: #f7f4ec;
+  --color-paper-2: #efeadd;
+  --color-ink: #101010;
+  --color-ink-2: #2a2a28;
+  --color-rule: #cfc7b3;
+  --color-mute: #6f6a5f;
+  --color-stamp: #e1341e;
+  --color-highlight: #f5d547;
+  --color-leaf: #1b6a3a;
+  --color-ocean: #1f4f8a;
+
+  --color-background: var(--color-paper);
+  --color-foreground: var(--color-ink);
+}
+
+:root {
+  /* Profile-driven tokens. Defaults are the editorial baseline. */
+  --r-font-base: var(--font-sans);
+  --r-font-heading: var(--font-serif);
+  --r-font-size: 18px;
+  --r-line-height: 1.6;
+  --r-letter-spacing: 0;
+  --r-word-spacing: 0;
+  --r-measure: 68ch;
+  --r-bg: var(--color-paper);
+  --r-fg: var(--color-ink);
+  --r-mute: var(--color-mute);
+  --r-rule: var(--color-rule);
+  --r-accent: var(--color-stamp);
+  --r-link: var(--color-ocean);
+  --r-focus: 3px solid var(--color-stamp);
+  --r-radius: 4px;
+  --r-motion: 1; /* 1 = motion on, 0 = motion off */
+  --r-target: 32px; /* min hit area */
+}
+
+html {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  min-height: 100dvh;
+}
+
+/* Editorial paper grain — subtle SVG noise on body */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.045;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.55 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: 240px 240px;
+  mix-blend-mode: multiply;
+}
+
+/* Focus styles */
+:focus-visible {
+  outline: var(--r-focus);
+  outline-offset: 3px;
+  border-radius: var(--r-radius);
+}
+
+/* Selection */
+::selection {
+  background: var(--color-highlight);
+  color: var(--color-ink);
+}
+
+/* ============================================================ */
+/* Profile presets — set via data-profile on <html>             */
+/* ============================================================ */
+
+html[data-profile="default"] {
+  /* baseline; no overrides */
+}
+
+html[data-profile="lowVision"] {
+  --r-font-size: 22px;
+  --r-line-height: 1.75;
+  --r-letter-spacing: 0.01em;
+  --r-measure: 56ch;
+  --r-bg: #fffdf6;
+  --r-fg: #050505;
+  --r-rule: #1a1a1a;
+  --r-focus: 4px solid #000;
+  --r-target: 44px;
+}
+
+html[data-profile="dyslexia"] {
+  --r-font-base: "OpenDyslexic", "Atkinson Hyperlegible", "Lexend", system-ui,
+    sans-serif;
+  --r-font-heading: "OpenDyslexic", "Atkinson Hyperlegible", "Lexend",
+    system-ui, sans-serif;
+  --r-line-height: 1.9;
+  --r-letter-spacing: 0.06em;
+  --r-word-spacing: 0.18em;
+  --r-measure: 56ch;
+  --r-bg: #faf6e8;
+}
+
+html[data-profile="cognitive"] {
+  --r-font-base: "Atkinson Hyperlegible", "Lexend", system-ui, sans-serif;
+  --r-font-heading: "Atkinson Hyperlegible", "Lexend", system-ui, sans-serif;
+  --r-font-size: 20px;
+  --r-line-height: 1.85;
+  --r-measure: 50ch;
+  --r-motion: 0;
+}
+
+html[data-profile="motor"] {
+  --r-target: 48px;
+  --r-font-size: 20px;
+}
+
+html[data-profile="screenReader"] {
+  --r-font-size: 18px;
+  /* visual styling stays editorial; we add skip-links + landmarks via markup */
+}
+
+/* Color-blindness filters applied to the renderer area only */
+.cb-filter--deutan {
+  filter: url(#cb-deutan);
+}
+.cb-filter--protan {
+  filter: url(#cb-protan);
+}
+.cb-filter--tritan {
+  filter: url(#cb-tritan);
+}
+
+/* Motion reduction */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+html[data-profile="cognitive"] *,
+html[data-profile="cognitive"] *::before,
+html[data-profile="cognitive"] *::after {
+  animation-duration: 0.001ms !important;
+  transition-duration: 0.001ms !important;
+}
+
+/* Renderer scope — used by AccessibleRenderer */
+.renderer {
+  font-family: var(--r-font-base);
+  font-size: var(--r-font-size);
+  line-height: var(--r-line-height);
+  letter-spacing: var(--r-letter-spacing);
+  word-spacing: var(--r-word-spacing);
+  color: var(--r-fg);
+  background: var(--r-bg);
+}
+
+.renderer h1,
+.renderer h2,
+.renderer h3 {
+  font-family: var(--r-font-heading);
+  color: var(--r-fg);
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+  margin: 1.4em 0 0.4em;
+}
+
+.renderer h1 {
+  font-size: 2.2em;
+  font-weight: 600;
+}
+.renderer h2 {
+  font-size: 1.5em;
+  font-weight: 600;
+}
+.renderer h3 {
+  font-size: 1.2em;
+  font-weight: 600;
+}
+
+.renderer p,
+.renderer li {
+  max-width: var(--r-measure);
+}
+
+.renderer p {
+  margin: 0 0 0.9em;
+}
+
+.renderer a {
+  color: var(--r-link);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1.5px;
+}
+
+.renderer a:hover,
+.renderer a:focus-visible {
+  text-decoration-thickness: 2.5px;
+  background: color-mix(in oklab, var(--color-highlight) 60%, transparent);
+}
+
+.renderer ul,
+.renderer ol {
+  padding-left: 1.25em;
+  margin: 0 0 1em;
+}
+
+.renderer li {
+  margin: 0.25em 0;
+}
+
+.renderer blockquote {
+  border-left: 3px solid var(--r-accent);
+  padding-left: 1em;
+  margin: 1em 0;
+  font-style: italic;
+  color: var(--r-mute);
+}
+
+.renderer figure {
+  margin: 1.2em 0;
+}
+
+.renderer figcaption {
+  font-size: 0.9em;
+  color: var(--r-mute);
+  margin-top: 0.4em;
+  font-family: var(--r-font-base);
+}
+
+.renderer mark.reading {
+  background: var(--color-highlight);
+  color: var(--color-ink);
+  padding: 0 0.1em;
+  border-radius: 2px;
+}
+
+/* Min hit area for interactive controls inside renderer/profile area */
+[data-profile] button,
+[data-profile] a,
+[data-profile] input,
+[data-profile] select {
+  min-height: var(--r-target);
+}
+
+/* Skip link */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--color-ink);
+  color: var(--color-paper);
+  padding: 12px 16px;
+  z-index: 100;
+  font-weight: 600;
+}
+.skip-link:focus {
+  left: 16px;
+  top: 16px;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Typewriter caret */
+.caret {
+  display: inline-block;
+  width: 0.5ch;
+  background: currentColor;
+  animation: caret 1s steps(1) infinite;
+}
+@keyframes caret {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* Marquee rule */
+.rule {
+  border: 0;
+  border-top: 1px solid var(--color-rule);
+}
+
+/* Stamp badge */
+.stamp {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1.5px solid var(--color-stamp);
+  color: var(--color-stamp);
+  text-transform: uppercase;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  padding: 4px 8px;
+  transform: rotate(-1.5deg);
+  background: transparent;
+}
