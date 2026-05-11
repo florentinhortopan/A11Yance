@@ -22,7 +22,29 @@ export function UrlInput() {
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    inputRef.current?.focus();
+    // Don't steal focus on touch devices — it pops a soft keyboard before
+    // the user has even seen the page. On pointer devices, focus the input
+    // with preventScroll so the editorial hero stays visible.
+    if (typeof window === "undefined") return;
+    const isCoarse = window.matchMedia?.("(pointer: coarse)").matches;
+    if (isCoarse) return;
+    inputRef.current?.focus({ preventScroll: true });
+  }, []);
+
+  // "/" anywhere on the page focuses the input (like GitHub / Linear).
+  // Skipped when the user is already typing into a field.
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if (e.key !== "/" || e.metaKey || e.ctrlKey || e.altKey) return;
+      const t = e.target as HTMLElement | null;
+      const tag = t?.tagName;
+      if (tag === "INPUT" || tag === "TEXTAREA" || t?.isContentEditable) return;
+      e.preventDefault();
+      inputRef.current?.focus({ preventScroll: true });
+      inputRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
   }, []);
 
   function handleSubmit(raw: string) {
@@ -110,6 +132,13 @@ export function UrlInput() {
             {ex.label}
           </button>
         ))}
+        <span className="ml-auto hidden md:inline-flex items-center gap-1.5 text-[11px] font-mono uppercase tracking-[0.14em] text-[var(--color-mute)]">
+          press
+          <kbd className="px-1.5 py-0.5 border border-[var(--color-rule)] bg-[var(--color-paper-2)] text-[var(--color-ink)] rounded-[3px] text-[11px] leading-none">
+            /
+          </kbd>
+          to focus
+        </span>
       </div>
     </div>
   );

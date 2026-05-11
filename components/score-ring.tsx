@@ -39,29 +39,29 @@ export function ScoreRing({ score, url }: Props) {
         </span>
       </div>
 
-      <div className="flex items-end gap-6">
+      <div className="flex flex-wrap items-baseline gap-x-5 gap-y-1">
         <div
-          className="font-serif leading-[0.85] tracking-[-0.04em]"
+          className="font-serif leading-[0.9] tracking-[-0.04em] flex items-baseline min-w-0"
           style={{ color: gradeColor(score.grade) }}
         >
-          <span className="text-[clamp(5rem,12vw,9rem)] font-semibold tabular-nums">
+          <span className="text-[clamp(3.5rem,8vw,6rem)] font-semibold tabular-nums">
             {score.score}
           </span>
-          <span className="ml-1 text-[clamp(2rem,5vw,3.5rem)] font-medium align-baseline">
+          <span className="ml-1 text-[clamp(1.25rem,2.4vw,1.75rem)] font-medium">
             /100
           </span>
         </div>
-        <div className="pb-3">
-          <div
-            className="text-5xl md:text-6xl font-serif font-semibold"
+        <div className="flex items-baseline gap-2">
+          <span
+            className="text-4xl md:text-5xl font-serif font-semibold leading-none"
             style={{ color: gradeColor(score.grade) }}
             aria-label={`Grade ${score.grade}`}
           >
             {score.grade}
-          </div>
-          <div className="text-xs font-mono uppercase tracking-[0.18em] text-[var(--color-mute)] mt-1">
+          </span>
+          <span className="text-[10px] font-mono uppercase tracking-[0.18em] text-[var(--color-mute)]">
             grade
-          </div>
+          </span>
         </div>
       </div>
 

@@ -14,7 +14,7 @@ export function SiteHeader() {
           / a11y reader
         </span>
       </Link>
-      <nav className="flex items-center gap-5 text-sm font-mono uppercase tracking-[0.14em]">
+      <nav className="flex items-baseline gap-5 text-sm font-mono uppercase tracking-[0.14em] leading-none whitespace-nowrap">
         <a
           href="https://www.w3.org/WAI/standards-guidelines/wcag/"
           target="_blank"

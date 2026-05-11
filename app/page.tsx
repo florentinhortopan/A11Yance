@@ -1,6 +1,7 @@
 import { Eye, BookOpen, Mic2, Type } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { UrlInput } from "@/components/url-input";
+import { InfoStamp } from "@/components/ui/info-stamp";
 
 export default function Home() {
   return (
@@ -15,7 +16,29 @@ export default function Home() {
         <div className="flex items-center gap-3 mb-10 text-[11px] font-mono uppercase tracking-[0.22em] text-[var(--color-mute)]">
           <span>Monday, in print and on screen</span>
           <span className="flex-1 h-px bg-[var(--color-rule)]" />
-          <span className="stamp">Beta · Static audit</span>
+          <InfoStamp
+            placement="bottom-end"
+            tooltip={
+              <>
+                <strong className="block font-serif text-base mb-1.5 normal-case">
+                  Why &ldquo;static&rdquo;?
+                </strong>
+                <p className="m-0">
+                  We read the HTML the server sends and audit it without
+                  running its JavaScript or rendering a real browser. That
+                  catches missing alt text, headings, landmarks, link names
+                  and most ARIA issues &mdash; the majority of WCAG checks.
+                </p>
+                <p className="m-0 mt-2">
+                  It can&rsquo;t see post-hydration ARIA, focus order, live
+                  regions or real computed contrast. For those, run axe
+                  DevTools in Chrome on the final page.
+                </p>
+              </>
+            }
+          >
+            Beta · Static audit
+          </InfoStamp>
         </div>
 
         {/* Hero */}
